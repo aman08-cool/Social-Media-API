@@ -1,0 +1,27 @@
+{
+  "name": "social-media-apis",
+  "version": "1.0.0",
+  "description": "This Repo.....contains the files used on social media website",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aman08-cool/Social-media-APIs.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aman08-cool/Social-media-APIs/issues"
+  },
+  "homepage": "https://github.com/aman08-cool/Social-media-APIs#readme",
+  "dependencies": {
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "helmet": "^5.1.0",
+    "mongoose": "^6.4.2",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.18"
+  }
+}
