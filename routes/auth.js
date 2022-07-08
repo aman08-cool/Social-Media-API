@@ -1,28 +1,55 @@
 const router = require("express").Router();
 const User = require("../models/User");
-router.get("/register", async (req, res) => {
+const bcrypt = require("bcrypt");
+// router.get("/register", async (req, res) => {
+//   try {
+//     console.log(req);
+//     const users = await User.find();
+//     res.json(users);
+//   } catch (err) {
+//     console.log(err, "error");
+//   }
+// });
+//REGISTER
+router.post("/register", async (req, res) => {
   try {
-    console.log(req);
-    const users = await User.find();
-    res.json(users);
+    //genrate new passoword...
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    //generate new user
+    const user = await new User({
+      username: req.body.username,
+      email: req.body.email,
+      password: hashedPassword,
+    });
+    //save new user
+    await user.save();
+    res.status(200).json(user);
   } catch (err) {
     console.log(err, "error");
   }
 });
-//REGISTER
-router.post("/register", async (req, res) => {
-  try {
-    console.log(req);
-    const user = await new User({
-      username: req.body.username,
-      email: req.body.email,
-      password: req.body.username,
-    });
 
-    await user.save();
-    res.send("ok");
+//LOGIN
+router.post("/login", async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const validPassword = await bcrypt.compare(
+      req.body.password,
+      user.password
+    );
+    if (!validPassword) {
+      return res.status(404).json({ message: "Invalid password" });
+    }
+
+    res.status(200).json(user);
   } catch (err) {
-    console.log(err, "error");
+    // console.log(err, "error");
+    res.status(500).json(err);
   }
 });
 
